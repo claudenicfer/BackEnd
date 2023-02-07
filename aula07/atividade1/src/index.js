@@ -4,22 +4,18 @@ const port = 3000
 const locallhost = 'http://127.0.0.1'
 
 
-
 app.use(express.json())
 
 
-const { usuarioGet, usuarioPost } = require('./controller/usuario-controller')
-usuarioGet(app)
-usuarioPost(app)
+// importando os controllers
+const usuarioController = require('./controllers/usuario-controller.js')
+const tarefaController = require('./controllers/tarefa-controller.js')
 
-const { tarefaGet, tarefaPost } = require('./controller/tarefa-controller')
-tarefaGet(app)
-tarefaPost(app)
+usuarioController.rotas(app)
+tarefaController.rotas(app)
+
 
 
 app.listen(port, () => {
     console.log(`Servidor rodando na porta ${locallhost}:${port}`)
 })
-
-
-// module.exports = app
