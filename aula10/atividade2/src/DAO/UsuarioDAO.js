@@ -1,84 +1,45 @@
 // Importa o bd.js para poder usar o banco de dados simulado
-const db = require("../infra/db");
+const { bdUsuarios } = require("../infra/bd");
 
-// Essa classe encapsula o acesso ao Banco de Dados. Todos os métodos abaixos são estáticos. Isso quer dizer que não precisamos instanciar a classe para usá-los e serão chamados pela classe UsuarioController... Alguns vão dar retorno e para outros, isso não será necessário
+
+// Essa classe encapsula o acesso ao Banco de Dados. Todos os métodos abaixos são estáticos. Isso quer dizer que não precisamos instanciar a classe para usá-los e serão chamados pelo nome da classe que eles pertencem UsuarioController... 
+// Alguns vão dar retorno e em outros, isso não será necessário
 class UsuarioDAO {
+  // Executa a funcionalidade de retornar o conteúdo do Banco ao ser chamada pelo controller
   static listar() {
-    const query = "SELECT * FROM USUARIOS";
-    return new Promise((resolve, reject) => {
-      db.all(query, (err, rows) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(rows);
-      });
-    });
+    return bdUsuarios;
   }
 
+
+  // Executa a funcionalidade de inserir as informações no Banco ao ser chamada pelo controller. As informações chegam por parâmetro
   static inserir(usuario) {
-    const query = `INSERT INTO USUARIOS (nome, email, senha) VALUES (?, ?, ?)`;
-
-    return new Promise((resolve, reject) => {
-      db.run(query, [usuario.nome, usuario.email, usuario.senha], (err) => {
-        if (err) {
-          reject({
-            messagem: "Erro ao inserir o usuário",
-            erro: err,
-          });
-        }
-        resolve(usuario);
-      });
-    });
+    bdUsuarios.push(usuario);
   }
 
+
+  // Recebe a chamada do controller sendo passada o email como parâmetro, ela busca  as informações no Banco e dar  um return devolvendo o conteúdo encontrado para quem a chamou
   static buscarPorEmail(email) {
-    const query = "SELECT * FROM USUARIOS WHERE email = ?";
-    return new Promise((resolve, reject) => {
-      db.get(query, [email], (err, row) => {
-        if (err) {
-          reject(false);
-        }
-        resolve(row);
-      });
-    });
+    return bdUsuarios.find((usuario) => usuario.email === email);
   }
 
-  static atualizar(email, usuario) {
-    const query =
-      "UPDATE USUARIOS SET nome = ?, email = ?, senha = ? WHERE email = ?";
-    return new Promise((resolve, reject) => {
-      db.run(
-        query,
-        [usuario.nome, usuario.email, usuario.senha, email],
-        (err) => {
-          if (err) {
-            reject({
-              mensagem: "Erro ao atualizar o usuário",
-              erro: err,
-            });
-          }
-          resolve({ mensagem: "Usuário atualizado com sucesso" });
-        }
-      );
-    });
-  }
 
+  // Recebe a chamada do controller sendo passada para ela o email como parâmetro, ela busca o susário daquele email informado no Banco, Deleta o usuário encontrado e dar um return devolvendo o Email de quem foi deletado.
   static deletar(email) {
-    const query = "DELETE FROM USUARIOS WHERE email = ?";
-    return new Promise((resolve, reject) => {
-      db.run(query, [email], (err) => {
-        if (err) {
-          reject({
-            mensagem: "Erro ao deletar o usuário",
-            erro: err,
-          });
-        }
+    const usuario = bdUsuarios.find((usuario) => usuario.email === email);
+    const index = bdUsuarios.indexOf(usuario);
+    bdUsuarios.splice(index, 1);
+    return usuario;
+  }
 
-        resolve({ mensagem: "Usuário deletado com sucesso", email: email });
-      });
-    });
+
+  // Recebe a chamada do controller sendo passada para ela o email e um usuário como parâmetros, a função verifica o usuário dono do email e atualiza as informações de quem ele encontrou o email procurado. 
+  static atualizar(email, usuario) {
+    const usuarioAtual = bdUsuarios.find((usuario) => usuario.email === email);
+    const index = bdUsuarios.indexOf(usuarioAtual);
+    bdUsuarios[index] = usuario;
   }
 }
+
 
 // Exporta a classe
 module.exports = UsuarioDAO;

@@ -1,3 +1,5 @@
+// Precisa implementar as funcionalidades em Tarefa
+
 // Importa o bd.js para poder usar o banco de dados simulado
 const { bdTarefas } = require("../infra/bd.js")
 

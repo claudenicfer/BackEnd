@@ -1,5 +1,5 @@
 // Importa o bd.js para poder usar o banco de dados simulado
-const { bdTarefas } = require("../infra/bd.js")
+
 
 class tarefaController {
     static rotas(app){
