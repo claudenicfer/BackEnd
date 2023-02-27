@@ -1,0 +1,13 @@
+.carousel-caption-container {
+    display: flex !important;
+    justify-content: center;
+}
+
+.carousel-caption-content {
+    background-color: rgba(243, 192, 115, 0.145);
+    box-shadow: 10px 10px 27px -13px rgba(0,0,0,0.75);
+    border-radius: 20px;
+    padding: 15px 20px;
+    min-width: 40%;
+    color: #000;
+}

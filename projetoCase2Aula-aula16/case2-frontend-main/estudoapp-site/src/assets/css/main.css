@@ -1,0 +1,19 @@
+.conteudo-margin {
+    margin-top: 55px;
+}
+
+.active.nav-link {
+    color: #ffd000 !important;
+    border-bottom: 1px solid #ffd000 !important;
+}
+
+.nav-link{
+    border-bottom: 1px solid transparent;
+}
+
+/* .btn-person {
+    background-color: #FFCA2C !important;
+    border-color: #e3ac06 !important;
+    color: rgb(21, 21, 21) !important;
+}
+ */
